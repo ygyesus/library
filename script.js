@@ -24,7 +24,10 @@ form.addEventListener("submit", ()=>{
     const pages = bookPages.value
     const read = yesRead.checked ? true : false
     addBookToLibrary(title, author, pages, read)
-    displayBooks()
+    while(bookContainer.hasChildNodes()){
+        bookContainer.removeChild(bookContainer.firstChild)
+    }
+    displayBooks(books)
 })
 
 closeBtn.addEventListener("click", (e)=>{
@@ -35,8 +38,7 @@ closeBtn.addEventListener("click", (e)=>{
 
 
 
-
-const books = [];
+var books = [];
 const bookContainer = document.querySelector(".book-container")
 const readStatusString = read => read
     ? "have read already ✅"
@@ -120,11 +122,46 @@ function createDummyBooks(){
 
 function createCard(book){
     const bookCard = document.createElement("div");
+    // console.log("BOOK:", book)
     bookCard.classList.add("book-card");
+    bookCard.dataset.id = book.id
+    bookCard.dataset.title = book.title
+    bookCard.dataset.read = book.read
+    bookCard.dataset.author = book.author
+    bookCard.dataset.pages = book.pages
 
     const bookFigure = document.createElement("div");
     bookFigure.classList.add("book-figure");
     bookCard.appendChild(bookFigure);
+
+    const removeBtn = document.createElement("button")
+    const toggleBtn = document.createElement("button")
+    removeBtn.textContent = "Remove"
+    toggleBtn.textContent = "Toggle"
+    removeBtn.classList.add("remove-btn")
+    toggleBtn.classList.add("toggle-btn")
+    removeBtn.addEventListener("click", ()=>{
+        console.log("remove", bookCard.dataset.title)
+        
+        console.log(books)
+        for (const i in books){
+            currBook = books[i]
+            if (currBook.id === book.id){
+                books.splice(i, 1)
+            }
+        }
+        
+        while(bookContainer.hasChildNodes()){
+            bookContainer.removeChild(bookContainer.firstChild)
+        }
+        displayBooks(books)
+    })    
+
+    toggleBtn.addEventListener("click", ()=>{
+        book.read = !book.read
+        read.textContent = `${readStatusString(book.read)}`;
+    })
+    
 
     
     // bookFigure.textContent = book.title;
@@ -136,6 +173,8 @@ function createCard(book){
 
     const id = document.createElement("p");
     id.textContent = `ID: ${book.id}`;
+    removeBtn.dataset.id = book.id;
+    bookCard.dataset.id = book.id;
 
     const author = document.createElement("p");
     author.textContent = `Author: ${book.author}`;
@@ -146,24 +185,27 @@ function createCard(book){
     const read = document.createElement("p");
     read.textContent = `${readStatusString(book.read)}`;
 
-    bookContainer.appendChild((bookCard))  ;
-    console.log(book);  
+    bookContainer.appendChild((bookCard));
+    // console.log(book);  
 
     bookFigure.appendChild(title);
     // bookFigure.appendChild(id);
     bookFigure.appendChild(author);
     bookFigure.appendChild(pages);
     bookFigure.appendChild(read);
+    bookFigure.appendChild(removeBtn);
+    bookFigure.appendChild(toggleBtn)
 }
 
 
-function displayBooks(){
+function displayBooks(books){
     for (const book of books){
         createCard(book);
     }
 }
 
 createDummyBooks();
-displayBooks();
+displayBooks(books);
+
 
 

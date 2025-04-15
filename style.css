@@ -132,3 +132,25 @@ button.close{
     font-size: 110%;
     margin-bottom: 20px;
 }
+
+.remove-btn, .toggle-btn{
+    background-color: white;
+    color: black;
+    padding: 6px 10px;
+    margin-top: 20px;
+    border-radius: 1;
+    
+    
+}
+
+/* .remove-btn:hover, .toggle-btn:hover{
+    background-color: black;
+    color: white;
+    outline: 2px solid white; 
+} */
+.remove-btn{
+    margin-right: 5px;
+}
+/* .toggle-btn{
+    background-color: whit
+} */
