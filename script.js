@@ -61,6 +61,9 @@ function Book(title, author, pages, read){
     }
 }
 
+Book.prototype.toggle = function(){
+    this.read = !this.read
+}
 function addBookToLibrary(title, author, pages, read){
     const book = new Book(title, author, pages, read);
     books.push(book);
@@ -158,8 +161,11 @@ function createCard(book){
     })    
 
     toggleBtn.addEventListener("click", ()=>{
-        book.read = !book.read
-        read.textContent = `${readStatusString(book.read)}`;
+        book.toggle()
+        while(bookContainer.hasChildNodes()){
+            bookContainer.removeChild(bookContainer.firstChild)
+        }
+        displayBooks(books)
     })
     
 
